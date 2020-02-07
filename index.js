@@ -145,9 +145,50 @@ const deleteUser = (index) => {
         });
     }
 }
-//create("John Doe", "johndoe@example.com", 32, "male", true);
-//create("Tushar Kanjariya", "tushar@example.com", 32, "male", true);
-//create("Deep Manek", "deep@example.com", 32, "male", true);
+
+const compareValues = (key, order = 'asc') => {
+    return function innerSort(a, b) {
+        if (!a.hasOwnProperty(key) || !b.hasOwnProperty(key)) {
+            return 0;
+        }
+
+        const varA = (typeof a[key] === 'string')
+            ? a[key].toUpperCase() : a[key];
+        const varB = (typeof b[key] === 'string')
+            ? b[key].toUpperCase() : b[key];
+
+        let comparison = 0;
+        if (varA > varB) {
+            comparison = 1;
+        } else if (varA < varB) {
+            comparison = -1;
+        }
+        return (
+            (order === 'desc') ? (comparison * -1) : comparison
+        );
+    };
+}
+
+const sortBy = (key, order = 'asc') => {
+    let sortedArray = users.sort((compareValues(key, order)));
+    if (sortedArray.length == 0) {
+        console.log("-------------------Nothing for Sorting:-------------------");
+    } else {
+        sortedArray.forEach((item, index) => {
+            console.log(`-------------------After Sorting ${index + 1} User Info:-------------------`);
+            console.log("User Name: " + item.name);
+            console.log("User email: " + item.email);
+            console.log("User age: " + item.age);
+            console.log("User gender: " + item.gender);
+            console.log("User agreed to terms & conditions: " + item.agreed);
+        });
+    }
+}
+create("John Doe", "johndoe@example.com", 32, "male", true);
+create("Tushar Kanjariya", "tushar@example.com", 32, "male", true);
+create("Deep Manek", "deep@example.com", 32, "male", true);
 //update("tushar@example.com", "age", "15");
 //deleteUser("johndoe@example.com");
 //read("johndoe@example.com");
+//console.log(users.sort(compareValues("email")));
+sortBy("email", order = 'desc');
